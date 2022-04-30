@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="ThemeStarz">
+
+    <!--CSS -->
+    <link rel="stylesheet" href="static/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/assets/font-awesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="static/assets/css/jquery.scrollbar.css">
+    <link rel="stylesheet" href="static/assets/css/leaflet.css">
+    <link rel="stylesheet" href="static/assets/css/style.css">
+    <script src="https://kit.fontawesome.com/506b713f8c.js" crossorigin="anonymous"></script>
+    <title>Boston House Predictor</title>
+
+</head>
+
+<body>
+
+<!-- WRAPPER
+=====================================================================================================================-->
+<div class="ts-page-wrapper ts-homepage" id="page-top">
+
+    <!--*********************************************************************************************************-->
+    <!--HEADER **************************************************************************************************-->
+    <!--*********************************************************************************************************-->
+    <header id="ts-header" class="fixed-top">
+
+        <!--PRIMARY NAVIGATION
+        =============================================================================================================-->
+        <nav id="ts-primary-navigation" class="navbar navbar-expand-md navbar-light">
+            <div class="container">
+
+                <!--Brand Logo-->
+                <a class="navbar-brand" href="index.html">
+                    <i class="fa fa-home " style="color:rgb(19, 207, 57);" aria-hidden="true"></i> <b>CodeBrigade House Predictor</b>
+                </a>
+
+                <!--Responsive Collapse Button-->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarPrimary" aria-controls="navbarPrimary" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!--Collapsing Navigation-->
+                <div class="collapse navbar-collapse" id="navbarPrimary">
+
+                    <!--RIGHT NAVIGATION MAIN LEVEL
+                    =================================================================================================-->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!--SEARCH(Main level)
+                        =============================================================================================-->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" onclick='search_menu()'>Search Houses</a>
+                        </li>
+                        <script>
+                            function search_menu() {
+                                var x = document.getElementById("search_menu");
+                                if (x.style.display === "none") {
+                                    x.style.display = "block";
+                                    window.scrollTo(0, 0);
+                                } else {
+                                    x.style.display = "none";
+                                }
+                            }
+                        </script>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="#predictor ">Predict Price</a>
+                        </li>
+
+                        <!--SUBMIT (Main level)
+                        =============================================================================================-->
+                        
+
+                    </ul>
+                    <!--end Right navigation-->
+
+                </div>
+                <!--end navbar-collapse-->
+            </div>
+            <!--end container-->
+        </nav>
+        <!--end #ts-primary-navigation.navbar-->
+
+    </header>
+    <!--end Header-->
+
+    <!-- HERO MAP
+    =================================================================================================================-->
+    <section id="ts-hero" class=" mb-0">
+
+        <!--Fullscreen mode-->
+        <div class="ts-full-screen ts-has-horizontal-results w-1001 d-flex1 flex-column1">
+
+            <!-- MAP
+            =========================================================================================================-->
+            <div class="ts-map ts-shadow__sm">
+
+                <!-- FORM
+                =====================================================================================================-->
+                <div class="ts-form__map-search ts-z-index__2" id="search_menu" style="display: none;">
+                    <!--Form-->
+                    <form class="ts-form">
+
+                        <!--Collapse button-->
+                        <a href=".ts-form-collapse" data-toggle="collapse" class="ts-center__vertical justify-content-between">
+                            <h5 class="mb-0">Search Filter</h5>
+                        </a>
+
+                        <!--Form-->
+                        <div class="ts-form-collapse ts-xs-hide-collapse collapse show">
+
+                            <!--Keyword-->
+                            <div class="form-group my-2 pt-2">
+                                <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Address, City or ZIP">
+                            </div>
+
+                            <!--Category-->
+                            <select class="custom-select my-2" id="type" name="category">
+                                <option value="">Type</option>
+                                <option value="1">Apartment</option>
+                                <option value="2">Villa</option>
+                                <option value="3">Land</option>
+                                <option value="4">Garage</option>
+                            </select>
+
+                            <!--Status-->
+                            <select class="custom-select my-2" id="status" name="status">
+                                <option value="">Status</option>
+                                <option value="1">Sale</option>
+                            </select>
+
+                            <!--Max Price-->
+                            <select class="custom-select my-2" id="price" name="price">
+                                <option value="">Max Price</option>
+                                <option value="5000">$5,000</option>
+                                <option value="10000">$10,000</option>
+                                <option value="50000">$50,000</option>
+                                <option value="100000">$100,000</option>
+                                <option value="100000>">> $100,000</option>
+                            </select>
+
+                            <!--Submit button-->
+                            <div class="form-group mt-2 mb-3">
+                                <button type="submit" class="btn btn-primary w-100" id="search-btn">Search</button>
+                            </div>
+
+                            <!--More Options Button-->
+                            <a href="#more-options-collapse" class="collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="more-options-collapse">
+                                <i class="fa fa-plus-circle ts-text-color-primary mr-2 ts-visible-on-collapsed"></i>
+                                <i class="fa fa-minus-circle ts-text-color-primary mr-2 ts-visible-on-uncollapsed"></i>
+                                More Options
+                            </a>
+
+                            <!--Hidden Form-->
+                            <div class="collapse" id="more-options-collapse">
+
+                                <!--Padding-->
+                                <div class="pt-4">
+
+                                    <!--Row-->
+                                    <div class="form-row">
+
+                                        <!--Bedrooms-->
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="bedrooms">Bedrooms</label>
+                                                <input type="number" class="form-control" id="bedrooms" name="bedrooms" min="0">
+                                            </div>
+                                        </div>
+
+                                        <!--Bathrooms-->
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="bathrooms">Bathrooms</label>
+                                                <input type="number" class="form-control" id="bathrooms" name="bathrooms" min="0">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!--end row-->
+
+                                </div>
+                                <!--end Padding-->
+                            </div>
+                            <!--end more-options-collapse-->
+
+                        </div>
+                        <!--end ts-form-collapse-->
+
+                    </form>
+                    <!--end ts-form-->
+                </div>
+                <!--end ts-form__map-search-->
+
+                <div id="ts-map-hero" class="h-100 ts-z-index__1"
+                     data-ts-map-leaflet-provider="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png"
+                     data-ts-map-zoom-position="bottomright"
+                     data-ts-map-scroll-wheel="1"
+                     data-ts-map-zoom="13"
+                     data-ts-map-center-latitude="40.702411"
+                     data-ts-map-center-longitude="-73.556842"
+                     data-ts-locale="en-US"
+                     data-ts-currency="USD"
+                     data-ts-unit="m<sup>2</sup>"
+                     data-ts-display-additional-info="area_Area;bedrooms_Bedrooms;bathrooms_Bathrooms"
+                >
+                </div>
+
+            </div>
+
+            <!-- RESULTS
+            =========================================================================================================-->
+            <div id="ts-results" class="ts-results__horizontal scrollbar-inner dragscroll">
+                <div class="ts-results-wrapper" style="margin-top:2vh;"></div>
+            </div>
+
+        </div>
+        <!--end full-screen-->
+
+    </section>
+    <!--end ts-hero-->
+
+    <!--*********************************************************************************************************-->
+    <!-- MAIN ***************************************************************************************************-->
+    <!--*********************************************************************************************************-->
+
+   
+     
+
+        <!--ITEM CAROUSEL
+        =============================================================================================================-->
+        <section class="ts-block " data-bg-pattern="static/assets/img/bg-pattern-dot.png" style="margin-top:5vh;" >
+
+            <!--Title-->
+            <div class="ts-title text-center" >
+                <h2>Top Notch Offers</h2>
+            </div>
+
+            <!--Carousel-->
+            <div class="owl-carousel ts-items-carousel my-5" data-owl-items="5" data-owl-dots="1" >
+
+                <!--Item-->
+                <div class="slide">
+
+                    <div class="card ts-item ts-card ts-item__lg">
+
+                        <!--Ribbon-->
+                        <div class="ts-ribbon">
+                            <i class="fa fa-thumbs-up"></i>
+                        </div>
+
+                        <!--Card Image-->
+                        <a href="detail-01.html" class="card-img ts-item__image" data-bg-image="static/assets/img/apartment-1.jpg">
+                            <div class="ts-item__info-badge">
+                                $350,000
+                            </div>
+                            <figure class="ts-item__info">
+                                <h4>Big Luxury Apartment</h4>
+                                <aside>
+                                    <i class="fa fa-map-marker mr-2"></i>
+                                    1350 Arbutus Drive
+                                </aside>
+                            </figure>
+                        </a>
+
+                        <!--Card Body-->
+                        <div class="card-body">
+                            <div class="ts-description-lists">
+                                <dl>
+                                    <dt>Area</dt>
+                                    <dd>325m<sup>2</sup></dd>
+                                </dl>
+                                <dl>
+                                    <dt>Bedrooms</dt>
+                                    <dd>2</dd>
+                                </dl>
+                                <dl>
+                                    <dt>Bathrooms</dt>
+                                    <dd>1</dd>
+                                </dl>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!--end ts-item-->
+                </div>
+                <!--end slide-->
+
+                <!--Item-->
+                <div class="slide">
+
+                    <div class="card ts-item ts-card ts-item__lg">
+
+                        <!--Ribbon-->
+                        <div class="ts-ribbon-corner">
+                            <span>Updated</span>
+                        </div>
+
+                        <!--Card Image-->
+                        <a href="detail-01.html" class="card-img ts-item__image" data-bg-image="static/assets/img/apartment-2.jpg">
+                            <figure class="ts-item__info">
+                                <h4>Cozy Design Studio</h4>
+                                <aside>
+                                    <i class="fa fa-map-marker mr-2"></i>
+                                    4831 Worthington Drive
+                                </aside>
+                            </figure>
+                            <div class="ts-item__info-badge">$125,000</div>
+                        </a>
+
+                        <!--Card Body-->
+                        <div class="card-body ts-item__body">
+                            <div class="ts-description-lists">
+                                <dl>
+                                    <dt>Area</dt>
+                                    <dd>325m<sup>2</sup></dd>
+                                </dl>
+                                <dl>
+                                    <dt>Bedrooms</dt>
+                                    <dd>2</dd>
+                                </dl>
+                                <dl>
+                                    <dt>Bathrooms</dt>
+                                    <dd>1</dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                    
+
+                    </div>
+                    <!--end ts-item ts-card-->
+                </div>
+                <!--end slide-->
+
+                <!--Item-->
+                <div class="slide">
+
+                    <div class="card ts-item ts-card ts-item__lg">
+
+                        <!--Card Image-->
+                        <a href="detail-01.html" class="card-img ts-item__image" data-bg-image="static/assets/img/apartment-3.jpg">
+                            <figure class="ts-item__info">
+                                <h4>Family Villa</h4>
+                                <aside>
+                                    <i class="fa fa-map-marker mr-2"></i>
+                                    4127 Winding Way
+                                </aside>
+                            </figure>
+                            <div class="ts-item__info-badge">$45,900</div>
+                        </a>
+
+                        <!--Card Body-->
+                        <div class="card-body ts-item__body">
+                            <div class="ts-description-lists">
+                                <dl>
+                                    <dt>Area</dt>
+                                    <dd>325m<sup>2</sup></dd>
+                                </dl>
+                                <dl>
+                                    <dt>Bedrooms</dt>
+                                    <dd>2</dd>
+                                </dl>
+                                <dl>
+                                    <dt>Bathrooms</dt>
+                                    <dd>1</dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                   
+
+                    </div>
+                    <!--end ts-item ts-card-->
+                </div>
+                <!--end slide-->
+
+                <!--Item-->
+                <div class="slide">
+                    <div class="card ts-item ts-card ts-item__lg">
+
+                        <!--Card Image-->
+                        <a href="detail-01.html" class="card-img ts-item__image" data-bg-image="static/assets/img/apartment-4.jpg">
+                            <div class="ts-item__info-badge">
+                                $860,000
+                            </div>
+                            <figure class="ts-item__info">
+                                <h4>Traditional Restaurant</h4>
+                                <aside>
+                                    <i class="fa fa-map-marker mr-2"></i>
+                                    1350 Arbutus Drive
+                                </aside>
+                            </figure>
+                        </a>
+
+                        <!--Card Body-->
+                        <div class="card-body">
+                            <div class="ts-description-lists">
+                                <dl>
+                                    <dt>Area</dt>
+                                    <dd>325m<sup>2</sup></dd>
+                                </dl>
+                                <dl>
+                                    <dt>Bedrooms</dt>
+                                    <dd>2</dd>
+                                </dl>
+                                <dl>
+                                    <dt>Bathrooms</dt>
+                                    <dd>1</dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                   
+
+                    </div>
+                    <!--end ts-item-->
+                </div>
+                <!--end slide-->
+
+                <!--Item-->
+                <div class="slide">
+                    <div class="card ts-item ts-card ts-item__lg">
+
+                        <!--Card Image-->
+                        <a href="detail-01.html" class="card-img ts-item__image" data-bg-image="static/assets/img/apartment-5.jpg">
+                            <figure class="ts-item__info">
+                                <h4>White Cubes Resort</h4>
+                                <aside>
+                                    <i class="fa fa-map-marker mr-2"></i>
+                                    4831 Worthington Drive
+                                </aside>
+                            </figure>
+                            <div class="ts-item__info-badge">$435,000</div>
+                        </a>
+
+                        <!--Card Body-->
+                        <div class="card-body ts-item__body">
+                            <div class="ts-description-lists">
+                                <dl>
+                                    <dt>Area</dt>
+                                    <dd>325m<sup>2</sup></dd>
+                                </dl>
+                                <dl>
+                                    <dt>Bedrooms</dt>
+                                    <dd>2</dd>
+                                </dl>
+                                <dl>
+                                    <dt>Bathrooms</dt>
+                                    <dd>1</dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                      
+
+                    </div>
+                    <!--end ts-item ts-card-->
+                </div>
+                <!--end slide-->
+
+                <!--Item-->
+                <div class="slide">
+                    <div class="card ts-item ts-card ts-item__lg">
+
+                        <!--Card Image-->
+                        <a href="detail-01.html" class="card-img ts-item__image" data-bg-image="static/assets/img/apartment-6.jpg">
+                            <figure class="ts-item__info">
+                                <h4>Bristol Tower Complex</h4>
+                                <aside>
+                                    <i class="fa fa-map-marker mr-2"></i>
+                                    4127 Winding Way
+                                </aside>
+                            </figure>
+                            <div class="ts-item__info-badge">$85,900</div>
+                        </a>
+
+                        <!--Card Body-->
+                        <div class="card-body ts-item__body">
+                            <div class="ts-description-lists">
+                                <dl>
+                                    <dt>Area</dt>
+                                    <dd>325m<sup>2</sup></dd>
+                                </dl>
+                                <dl>
+                                    <dt>Bedrooms</dt>
+                                    <dd>2</dd>
+                                </dl>
+                                <dl>
+                                    <dt>Bathrooms</dt>
+                                    <dd>1</dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                   
+                    </div>
+                    <!--end ts-item ts-card-->
+                </div>
+                <!--end slide-->
+
+                <!--Item-->
+                <div class="slide">
+                    <div class="card ts-item ts-card ts-item__lg">
+
+                        <!--Card Image-->
+                        <a href="detail-01.html" class="card-img ts-item__image" data-bg-image="static/assets/img/apartment-7.jpg">
+                            <figure class="ts-item__info">
+                                <h4>River Apartments</h4>
+                                <aside>
+                                    <i class="fa fa-map-marker mr-2"></i>
+                                    1350 Arbutus Drive
+                                </aside>
+                            </figure>
+                            <div class="ts-item__info-badge">
+                                $120,000
+                            </div>
+                        </a>
+
+                        <!--Card Body-->
+                        <div class="card-body">
+                            <div class="ts-description-lists">
+                                <dl>
+                                    <dt>Area</dt>
+                                    <dd>325m<sup>2</sup></dd>
+                                </dl>
+                                <dl>
+                                    <dt>Bedrooms</dt>
+                                    <dd>2</dd>
+                                </dl>
+                                <dl>
+                                    <dt>Bathrooms</dt>
+                                    <dd>1</dd>
+                                </dl>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!--end ts-item-->
+                </div>
+                <!--end slide-->
+
+                <!--Item-->
+                <div class="slide">
+                    <div class="card ts-item ts-card ts-item__lg">
+
+                        <!-- <div class="badge badge-primary">Rent</div> -->
+
+                        <!--Card Image-->
+                        <a href="detail-01.html" class="card-img ts-item__image" data-bg-image="static/assets/img/apartment-8.jpg">
+                            <figure class="ts-item__info">
+                                <h4>Apartment for Rent</h4>
+                                <aside>
+                                    <i class="fa fa-map-marker mr-2"></i>
+                                    4831 Worthington Drive
+                                </aside>
+                            </figure>
+                            <div class="ts-item__info-badge">
+                                <span>$480</span>
+                                <small>/ month</small>
+                            </div>
+                        </a>
+
+                        <!--Card Body-->
+                        <div class="card-body ts-item__body">
+                            <div class="ts-description-lists">
+                                <dl>
+                                    <dt>Area</dt>
+                                    <dd>325m<sup>2</sup></dd>
+                                </dl>
+                                <dl>
+                                    <dt>Bedrooms</dt>
+                                    <dd>2</dd>
+                                </dl>
+                                <dl>
+                                    <dt>Bathrooms</dt>
+                                    <dd>1</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end ts-item ts-card-->
+                </div>
+                <!--end slide-->
+
+
+            </div>
+        </section>
+        <!--end ts-block-->
+
+        <div class="container" id="predictor">
+            <br>
+            <h3 class="text-center "><b>CodeBrigade House Predictor</b></h3>
+            <div  align = "center" class="row ">
+                <div class="col-lg-8 col-sm-12 mx-auto" >
+                <h4 class="success" style="color:green;"><b>{{ pred }}</b></h4>
+            </div>
+            </div>
+
+
+            <form action="/predict" method="post">
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label for="crim">CRIM</label>
+                            <input type="number" class="form-control"  placeholder="per capita crime rate by town" id="crim" name="crim" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">ZN</label>
+                            <input type="number" class="form-control" placeholder="proportion of residential land zoned for lots" id="zn" name="zn" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label for="indus">INDUS</label>
+                            <input type="number" class="form-control" placeholder="proportion of non-retail business acres per town" id="indus" name="indus" required>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label for="chas">CHAS</label>
+                            <input type="number" class="form-control" placeholder="Charles River dummy variable" id="chas"
+                                name="chas" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label for="nox">NOX</label>
+                            <input type="number" class="form-control" placeholder=" nitric oxides concentration " id="nox" name="nox" required>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label for="rm">RM</label>
+                            <input type="number" class="form-control" placeholder="average number of rooms per dwelling" id="rm"
+                                name="rm" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label for="age">AGE</label>
+                            <input type="number" class="form-control" placeholder="proportion of owner-occupied units built prior to 1940" id="age" name="age" required>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label for="dis">DIS</label>
+                            <input type="number" class="form-control" placeholder=" weighted distances to five Boston employment centres" id="dis"
+                                name="dis" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label for="rad">RAD</label>
+                            <input type="number" class="form-control" placeholder="index of accessibility to radial highways" id="rad" name="rad" required>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label for="tax">TAX</label>
+                            <input type="number" class="form-control" placeholder="full-value property-tax rate per $10,000" id="tax"
+                                name="tax" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label for="ptratio">PTRATIO</label>
+                            <input type="number" class="form-control" placeholder="pupil-teacher ratio by town" id="ptratio" name="ptratio" required>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label for="black">B</label>
+                            <input type="number" class="form-control" placeholder="1000(Bk - 0.63)^2 where Bk is the proportion of black people by town" id="black"
+                                name="black" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 col-sm-12 mx-auto">
+                        <div class="form-group">
+                            <label for="lstat">LSTAT</label>
+                            <input type="number" class="form-control" placeholder="% lower status of the population" id="lstat" name="lstat" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                        <div class="form-group mx-auto">
+                            <button type="submit" class="btn btn-primary" id="submit" name="submit">Predict</button>
+                        </div>
+                </div>
+                </form>
+        </div>
+        <div class="row">
+                {{pred}}
+        </div>
+
+       
+        
+
+    </main>
+
+    <!--*********************************************************************************************************-->
+    <!--************ FOOTER *************************************************************************************-->
+    <!--*********************************************************************************************************-->
+
+    <footer id="ts-footer">
+
+        <!--MAIN FOOTER CONTENT
+        =============================================================================================================-->
+        <section id="ts-footer-main">
+            <div class="container">
+                <div class="row">
+
+                    <!--Brand and description-->
+                    <div class="col-md-6">
+                        <a href="index.html" class="brand">
+                            CodeBrigade House Predictor
+                        </a>
+                        <p class="mb-4" style="text-align:justify;">
+                            Housing prices are an important reflection of the economy, and housing price ranges are of great interest for both
+                            buyers and sellers. Ask a home buyer to describe their dream house, and they probably won’t begin with the height of the
+                            basement ceiling or the proximity to an east-west railroad. But this playground competition’s data-set proves that much
+                            more influences price negotiations than the number of bedrooms or a white-picket fence.
+                        </p>
+                        <a href="index.html" class="btn btn-outline-dark mb-4">Contact Us</a>
+                    </div>
+                    <div class="col-md-3">
+                    
+                    </div>
+                    <!--Contact Info-->
+                    <div class="col-md-3">
+                        <h4>Contact</h4>
+                        <address class="ts-text-color-light">
+                            GMRIT
+                            <br>
+                            BLOCK 5
+                            <br>
+                            <!-- <strong>Email: </strong>
+                            <a href="#" class="btn-link">office@example.com</a>
+                            <br>
+                            <strong>Phone:</strong>
+                            +1 215-606-0391
+                            <br>
+                            <strong>Skype: </strong>
+                            real.estate1 -->
+                        </address>
+                    </div>
+
+                </div>
+                <!--end row-->
+            </div>
+            <!--end container-->
+        </section>
+        <!--end ts-footer-main-->
+
+    
+    </footer>
+    <!--end #ts-footer-->
+
+
+</div>
+<!--end page-->
+
+<script src="static/assets/js/jquery-3.3.1.min.js"></script>
+<script src="static/assets/js/popper.min.js"></script>
+<script src="static/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="static/assets/js/owl.carousel.min.js"></script>
+<script src="static/assets/js/sly.min.js"></script>
+<script src="static/assets/js/dragscroll.js"></script>
+<script src="static/assets/js/jquery.scrollbar.min.js"></script>
+<script src="static/assets/js/leaflet.js"></script>
+<script src="static/assets/js/leaflet.markercluster.js"></script>
+<script src="static/assets/js/custom.js"></script>
+<script src="static/assets/js/map-leaflet.js"></script>
+
+</body>
+</html>
